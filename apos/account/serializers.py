@@ -33,3 +33,15 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.save()
         return user
     
+
+class UserSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = User
+        fields = ['id','username','first_name','email','role','is_valid']
+
+class UserEditSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ['first_name']

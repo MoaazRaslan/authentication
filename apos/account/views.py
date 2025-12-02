@@ -1,8 +1,8 @@
 from rest_framework.decorators import api_view,permission_classes
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny,IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import RegisterSerializer
+from .serializers import RegisterSerializer,UserSerializer,UserEditSerializer
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
 
@@ -13,6 +13,9 @@ from django.core.mail import send_mail
 from django.shortcuts import render,get_object_or_404
 from .models import User
 import re
+
+from common import custom_permissions
+
 def verification_email(request,user):
     signer = TimestampSigner()
     email_token = signer.sign(user.id)
@@ -154,4 +157,21 @@ def resetPassword(request):
     user.save()
     return Response({"message":"passwrod reset succesfully "},status=status.HTTP_200_OK)
 
+@api_view(['GET'])
+@permission_classes([custom_permissions.IsManager])
+def listUsers(request):
+    users = User.objects.all()
+    serializer = UserSerializer(users,many = True)
+    return Response({"Users":serializer.data},status=status.HTTP_200_OK)
 
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def editProfile(request):
+    user = request.user
+    serializer = UserEditSerializer(user,request.data,partial = True)
+    if serializer.is_valid():
+        serializer.save()
+        print(serializer.data)
+        return Response({"message":"successfully change first_name"},status=status.HTTP_200_OK)
+    return Response({"error":serializer.errors},status=status.HTTP_400_BAD_REQUEST)
