@@ -82,3 +82,21 @@ def verifyEmailView(request):
     user.is_valid = True
     user.save()
     return Response({"message":"email is verified "},status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def resetPassword(request):
+    email = request.data.get('email')
+    if not email:
+        return Response({"error":"enter email"},status=status.HTTP_400_BAD_REQUEST)
+    user = get_object_or_404(User,email = email)
+    signer = TimestampSigner()
+    email_token = signer.sign(user.id)
+    verify_url = request.build_absolute_uri(reverse("reset-password"))+f"?token={email_token}"
+    message = f"hi {user} , to reset your password click on the following url \n {verify_url}"
+    send_mail("reset-password",message,"apostrophe@email.com",[user.email])
+    return Response(
+        {"message":"email has been sent successfully"},
+        status=status.HTTP_200_OK
+        )
