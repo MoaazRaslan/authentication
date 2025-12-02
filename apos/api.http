@@ -23,3 +23,17 @@ Content-Type: application/json
     "username": "sssaksjnsdl",
     "password": "Ssss1234"
 }
+###
+POST http://localhost:8000/reset-password/ HTTP/1.1
+Content-Type: application/json
+
+{
+    "email": "h"
+}
+###
+POST http://localhost:8000/reset-password/ HTTP/1.1
+Content-Type: application/json
+
+{
+    "email": "m@gmail.com"
+}
