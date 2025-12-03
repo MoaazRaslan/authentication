@@ -1,3 +1,6 @@
+this project is about authentication using JWT , it has endpoints for register, login , reset password, verify email , edit profile and listing users.
+
+ 
 installing requirement :
 pip install requirements.txt
 
