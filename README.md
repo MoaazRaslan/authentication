@@ -1,3 +1,6 @@
+installing requirement :
+pip install requirements.txt
+
 Endpoint:
 1- POST : /register/
 - body :
@@ -10,6 +13,7 @@ Endpoint:
 - }
 
 2-POST : /login/
+
 body :
 {
 "username":"",
@@ -17,6 +21,7 @@ body :
 }
 
 3-GET : verify-email/?token={token}
+
 
 4-POST reset-password-request/
 // send verification token to email
@@ -26,9 +31,11 @@ body :
 }
 
 5-GET : reset-password-verification/?token={token}
+
 //verify token
 
 6-POST : reset-password/
+
 //reset password
 body : 
 {
@@ -38,10 +45,12 @@ body :
 }
 
 7-GET : account/users 
+
 // for authenticated managers only 
 // return list of users with their informations
 
 8-PUT : account/user
+
 //authenticated user
 body :
 {
